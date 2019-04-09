@@ -1,0 +1,86 @@
+{
+  "name": "@zcorky/storage",
+  "version": "0.0.1",
+  "description": "A minimal API wrapper for localStorage",
+  "main": "lib/index.js",
+  "repository": "https://github.com/zcorky/storage",
+  "homepage": "https://github.com/zcorky/storage",
+  "bugs": {
+    "url": "https://github.com/zcorky/storage/issues"
+  },
+  "keywords": [
+    "zcorky",
+    "storage",
+    "store",
+    "lockr",
+    "typescript"
+  ],
+  "author": "Zero <uniquecolesmith@gmail.com> (https://moeover.com)",
+  "license": "MIT",
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rimraf -rf lib",
+    "test": "jest -w 1",
+    "coverage": "jest -w 1 && codecov",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "@types/node": "^10.9.4",
+    "codecov": "^3.2.0",
+    "cross-env": "^5.2.0",
+    "husky": "^1.2.1",
+    "jest": "^24.5.0",
+    "rimraf": "^2.6.2",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.10.0",
+    "tslint-eslint-rules": "^5.3.1",
+    "tslint-jsdoc-rules": "^0.1.2",
+    "typescript": "^3.2.2"
+  },
+  "files": [
+    "lib/"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
+  "jest": {
+    "roots": [
+      "test"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "test/.*\\.spec\\.(ts|tsx)$",
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 90,
+        "lines": 90,
+        "statements": -10
+      }
+    },
+    "setupFiles": ["<rootDir>/test/browser/mock.ts"]
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
