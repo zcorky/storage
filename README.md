@@ -44,7 +44,7 @@ store.clear()
 * See the detailed [API Reference](./docs).
 
 ### Relatived
-* [lockr]([https://github.com/iamkun/dayjs](https://github.com/tsironis/lockr)) -  A minimal API wrapper for localStorages.
+* [lockr](https://github.com/tsironis/lockr) -  A minimal API wrapper for localStorages.
 * [store](https://github.com/marcuswestin/store.js)
 
 ## License
