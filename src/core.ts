@@ -8,13 +8,25 @@ export interface IStorage {
   has(key: string): boolean;
 }
 
+const DEFAULT_OPTIONS = {
+  prefix: '@@',
+};
+
 export class Storage implements IStorage {
+  constructor(private options: typeof DEFAULT_OPTIONS = DEFAULT_OPTIONS) {
+    //
+  }
+
+  private isValidKey(encodedKey: string) {
+    return encodedKey.indexOf(this.options.prefix) === -1;
+  }
+
   private encodeKey(key: string) {
-    return key;
+    return `${this.options.prefix}${key}`;
   }
 
   private decodeKey(encodedKey: string) {
-    return encodedKey;
+    return this.isValidKey(encodedKey) ? null : encodedKey.replace(this.options.prefix, '');
   }
 
   public get<T = any>(key: string): T | null {
@@ -33,8 +45,9 @@ export class Storage implements IStorage {
     try {
       localStorage.setItem(_key, JSON.stringify(value));
     } catch (err) {
+      /* istanbul ignore next line */
       if (console) {
-        console.warn(`Lockr didn't successfully save the '{ ${key}: ${value} }' pair, because the localStorage is full.`);
+        console.warn(`storage didn't successfully save the '{ ${key}: ${value} }' pair, because the localStorage is full.`);
       }
     }
   }
@@ -48,7 +61,8 @@ export class Storage implements IStorage {
   public keys(): string[] {
     return Object
       .keys(localStorage)
-      .map(encodedKey => this.decodeKey(encodedKey));
+      .map(encodedKey => this.decodeKey(encodedKey) as string)
+      .filter(e => !!e);
   }
 
   public getAll<T = any>() {
