@@ -1,11 +1,16 @@
 export interface IStorage {
   get<T = any>(key: string): T | null;
-  set<T = any>(key: string, value: T): void;
+  set<T = any>(key: string, value: T, expiredAt?: number): void;
   remove(key: string): void;
   keys(): string[];
   getAll<T = any>(): Record<string, T | null>;
   clear(): void;
   has(key: string): boolean;
+}
+
+interface Data<T> {
+  expiredAt: number;
+  value: T;
 }
 
 const DEFAULT_OPTIONS = {
@@ -21,6 +26,18 @@ export class Storage implements IStorage {
     return encodedKey.indexOf(this.options.prefix) === -1;
   }
 
+  private isValidValue<T>(data: Data<T>, encodeKey: string) {
+    if (!data || !data.hasOwnProperty('value'))  return false;
+
+    // expired, remove
+    if (data.expiredAt && Date.now() > data.expiredAt) {
+      localStorage.removeItem(encodeKey);
+      return false;
+    }
+
+    return true;
+  }
+
   private encodeKey(key: string) {
     return `${this.options.prefix}${key}`;
   }
@@ -29,21 +46,41 @@ export class Storage implements IStorage {
     return this.isValidKey(encodedKey) ? null : encodedKey.replace(this.options.prefix, '');
   }
 
+  private encodeValue<T>(value: T, expiredAt?: number) {
+    const now = Date.now();
+
+    if (!expiredAt) return {
+      value,
+    };
+
+    return {
+      expiredAt: now + expiredAt,
+      value,
+    };
+  }
+
   public get<T = any>(key: string): T | null {
     const _key = this.encodeKey(key);
-
+    
     try {
-      return JSON.parse(localStorage.getItem(_key) as string);
+      const _value = JSON.parse(localStorage.getItem(_key) as string) as Data<T>;
+
+      if (!this.isValidValue(_value, _key)) {
+        return null;
+      }
+      
+      return _value.value;
     } catch (err) {
       return null;
     }
   }
 
-  public set<T = any>(key: string, value: T) {
+  public set<T = any>(key: string, value: T, expiredAt?: number) {
     const _key = this.encodeKey(key);
+    const _value = this.encodeValue(value, expiredAt);
 
     try {
-      localStorage.setItem(_key, JSON.stringify(value));
+      localStorage.setItem(_key, JSON.stringify(_value));
     } catch (err) {
       /* istanbul ignore next line */
       if (console) {
