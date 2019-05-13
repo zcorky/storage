@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.11",
     "@types/node": "^10.9.4",
+    "@zcorky/delay": "^1.0.1",
     "codecov": "^3.2.0",
     "cross-env": "^5.2.0",
     "husky": "^1.2.1",
@@ -78,7 +79,9 @@
         "statements": -10
       }
     },
-    "setupFiles": ["<rootDir>/test/browser/mock.ts"]
+    "setupFiles": [
+      "<rootDir>/test/browser/mock.ts"
+    ]
   },
   "publishConfig": {
     "access": "public"
