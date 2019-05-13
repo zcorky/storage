@@ -6,37 +6,49 @@ describe('storage', () => {
     it('string', () => {
       storage.set('key', 'value');
 
-      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual('value');
+      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual({
+        value: 'value',
+      });
     });
 
     it('number', () => {
       storage.set('key', 0);
 
-      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual(0);
+      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual({
+        value: 0,
+      });
     });
 
     it('boolean', () => {
       storage.set('key', false);
 
-      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual(false);
+      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual({
+        value: false,
+      });
     });
 
     it('array', () => {
       storage.set('key', [1, '2', false, { x: '2' }]);
 
-      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual([1, '2', false, { x: '2' }]);
+      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual({
+        value: [1, '2', false, { x: '2' }],
+      });
     });
 
     it('object', () => {
       storage.set('key', { x: 'y' });
 
-      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual({ x: 'y' });
+      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual({
+        value: { x: 'y' },
+      });
     });
 
     it('null', () => {
       storage.set('key', null);
 
-      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual(null);
+      expect(JSON.parse(localStorage.getItem((storage as any).encodeKey('key')) as string)).toEqual({
+        value: null,
+      });
     });
   });
 
