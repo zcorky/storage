@@ -76,6 +76,18 @@ describe('storage', () => {
 
       expect(storage.get('key')).toEqual(null);
     });
+
+    it('exception catch', () => {
+      (global as any).localStorage.setItem('@@exception', 'xxxx');
+
+      expect(() => storage.get('exception')).not.toThrow();
+      expect(storage.get('exception')).toBe(null);
+      (global as any).localStorage.removeItem('@@exception');
+    });
+
+    it('invalid key', () => {
+      (global as any).localStorage.setItem('invalidKey', 'xxxx');
+    });
   });
 
   describe('storage.remove', () => {
