@@ -16,7 +16,7 @@ describe('expiration', () => {
     storage.set('expiration', 'value', 10);
     expect(storage.get('expiration')).toEqual('value');
 
-    await delay(10);
+    await delay(11);
     expect(storage.has('expiration')).toBeTruthy()
     expect(storage.get('expiration')).toEqual(null);
     expect(storage.has('expiration')).toBeFalsy();
@@ -26,7 +26,7 @@ describe('expiration', () => {
     storage.set('expiration', 'value', 100);
     expect(storage.get('expiration')).toEqual('value');
 
-    await delay(100);
+    await delay(101);
     expect(storage.has('expiration')).toBeTruthy()
     expect(storage.get('expiration')).toEqual(null);
     expect(storage.has('expiration')).toBeFalsy();
