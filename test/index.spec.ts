@@ -100,6 +100,12 @@ describe('storage', () => {
     it('invalid key', () => {
       (global as any).localStorage.setItem('invalidKey', 'xxxx');
     });
+
+    it('default value', () => {
+      expect(storage.has('default value')).toBe(false);
+      expect(storage.get('default value')).toBe(null);
+      expect(storage.get('default value', 'xxx')).toBe('xxx');
+    });
   });
 
   describe('storage.remove', () => {

@@ -1,5 +1,5 @@
 export interface IStorage {
-  get<T = any>(key: string): T | null;
+  get<T = any>(key: string, defaultValue?: T): T | null;
   set<T = any>(key: string, value: T, expiredAt?: number): void;
   remove(key: string): void;
   keys(): string[];
@@ -59,19 +59,20 @@ export class Storage implements IStorage {
     };
   }
 
-  public get<T = any>(key: string): T | null {
+  public get<T = any>(key: string, defaultValue: T = null as any as T): T | null {
     const _key = this.encodeKey(key);
     
     try {
       const _value = JSON.parse(localStorage.getItem(_key) as string) as Data<T>;
 
+      // value is invalid
       if (!this.isValidValue(_value, _key)) {
-        return null;
+        return defaultValue;
       }
-      
+
       return _value.value;
     } catch (err) {
-      return null;
+      return defaultValue;
     }
   }
 
