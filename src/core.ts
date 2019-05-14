@@ -112,7 +112,12 @@ export class Storage implements IStorage {
   }
 
   public clear() {
-    localStorage.clear();
+    this
+      .keys()
+      .map(rawKey => this.encodeKey(rawKey))
+      .forEach(key => {
+        localStorage.removeItem(key);
+      });
   }
 
   public has(key: string) {
