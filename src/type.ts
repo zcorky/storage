@@ -10,5 +10,5 @@ export interface IStorage {
 
 export interface IStorageOptions {
   prefix?: string;
-  engine?: 'localStorage' | 'indexeddb';
+  engine?: 'localStorage' | 'sessionStorage' | 'indexeddb';
 }
