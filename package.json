@@ -1,6 +1,6 @@
 {
   "name": "@zcorky/storage",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A minimal API wrapper for localStorage",
   "main": "lib/index.js",
   "repository": "https://github.com/zcorky/storage",

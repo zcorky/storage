@@ -2,8 +2,8 @@ import { IStorage, IStorageOptions,IStorageDriverType } from './type';
 
 import { isInvalidKey, encodeKey, decodeKey } from './utils';
 
-import { LocalStorage } from './drivers/LocalStorage';
-import { SessionStorage } from './drivers/SessionStorage';
+import { LocalStorage } from './drivers/localStorage';
+import { SessionStorage } from './drivers/sessionStorage';
 import { IndexDBStorage } from './drivers/indexeddb';
 
 const DEFAULT_OPTIONS = {
