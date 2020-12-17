@@ -1,17 +1,20 @@
-import { IStorage, IStorageOptions } from '../type';
+import { IStorageDriverOptions } from '../type';
+import { StorageDriver } from '../driver';
 
 const DEFAULT_OPTIONS = {
   prefix: '',
 };
 
-export class IndexDBStorage implements IStorage {
-  private prefix = this.options?.prefix || '';
+export class IndexDBStorage extends StorageDriver {
+  // private prefix = this.options?.prefix || '';
 
   private dbName = 'zodash-db';
   private objectStoreName = 'zodash-store';
   private db: IDBDatabase;
 
-  constructor(private options: IStorageOptions = DEFAULT_OPTIONS) {
+  constructor(options: IStorageDriverOptions = DEFAULT_OPTIONS) {
+    super(options);
+
     const request = window.indexedDB.open(this.dbName, 1);
 
     request.onerror = (event) => {
@@ -30,18 +33,6 @@ export class IndexDBStorage implements IStorage {
         db.createObjectStore(this.objectStoreName);
       }
     }
-  }
-
-  private isInvalidKey(encodedKey: string) {
-    return encodedKey.indexOf(this.prefix) === -1;
-  }
-
-  private encodeKey(key: string) {
-    return `${this.prefix}${key}`;
-  }
-
-  private decodeKey(encodedKey: string) {
-    return this.isInvalidKey(encodedKey) ? null : encodedKey.replace(this.prefix, '');
   }
 
   public async get<T = any>(key: string): Promise<T | null> {

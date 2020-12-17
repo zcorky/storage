@@ -1,5 +1,5 @@
 class LocalStorageMock {
-  private store = {};
+  public store = {};
 
   public clear() {
     this.store = {};
@@ -10,6 +10,7 @@ class LocalStorageMock {
   }
 
   public setItem(key: string, value: any) {
+    // console.log('setItem:', key, value);
     this.store[key] = value.toString();
   }
 
@@ -18,4 +19,5 @@ class LocalStorageMock {
   }
 };
 
+// console.log('localStorage:', 'xxx');
 (global as any).localStorage = new LocalStorageMock();

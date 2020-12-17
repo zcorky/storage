@@ -8,7 +8,18 @@ export interface IStorage {
   has(key: string): Promise<boolean>;
 }
 
-export interface IStorageOptions {
-  prefix?: string;
-  engine?: 'localStorage' | 'sessionStorage' | 'indexeddb';
+export interface IStorageOptions extends IStorageDriverOptions {
+  driver?: IStorageDriverType;
 }
+
+export interface IStorageDriver {
+  isInvalidKey(encodedKey: string): boolean;
+  encodeKey(key: string): string;
+  decodeKey(encodedKey: string): string | null;
+}
+
+export interface IStorageDriverOptions {
+  prefix?: string;
+}
+
+export type IStorageDriverType = 'localStorage' | 'sessionStorage' | 'indexeddb';

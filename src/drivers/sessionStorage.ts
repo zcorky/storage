@@ -1,26 +1,13 @@
-import { IStorage, IStorageOptions } from '../type';
+import { IStorageDriverOptions } from '../type';
+import { StorageDriver } from '../driver';
 
 const DEFAULT_OPTIONS = {
   prefix: '@@',
 };
 
-export class SessionStorage implements IStorage {
-  private prefix = this.options?.prefix || '';
-
-  constructor(private options: IStorageOptions = DEFAULT_OPTIONS) {
-    //
-  }
-
-  private isInvalidKey(encodedKey: string) {
-    return encodedKey.indexOf(this.prefix) === -1;
-  }
-
-  private encodeKey(key: string) {
-    return `${this.prefix}${key}`;
-  }
-
-  private decodeKey(encodedKey: string) {
-    return this.isInvalidKey(encodedKey) ? null : encodedKey.replace(this.prefix, '');
+export class SessionStorage extends StorageDriver {
+  constructor(options: IStorageDriverOptions = DEFAULT_OPTIONS) {
+    super(options)
   }
 
   public async get<T = any>(key: string): Promise<T | null> {
