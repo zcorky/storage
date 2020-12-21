@@ -1,6 +1,6 @@
 export interface IStorage {
   get<T = any>(key: string): Promise<T | null>;
-  set<T = any>(key: string, value: T): Promise<void>;
+  set<T = any>(key: string, value: T, options?: ISetOptions): Promise<void>;
   remove(key: string): Promise<void>;
   keys(): Promise<string[]>;
   getAll<T = any>(): Promise<Record<string, T | null>>;
@@ -8,6 +8,9 @@ export interface IStorage {
   has(key: string): Promise<boolean>;
 }
 
+export interface ISetOptions {
+  maxAge?: number;
+}
 export interface IStorageOptions extends IStorageDriverOptions {
   driver?: IStorageDriverType;
 }

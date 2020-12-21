@@ -1,4 +1,4 @@
-import { IStorage, IStorageOptions,IStorageDriverType } from './type';
+import { IStorage, IStorageOptions,IStorageDriverType, ISetOptions } from './type';
 
 import { isInvalidKey, encodeKey, decodeKey } from './utils';
 
@@ -52,31 +52,55 @@ export class Storage implements IStorage {
     return this._instance;
   }
 
-  public get<T = any>(key: string) {
-    return this.instance.get<T>(key);
+  public async get<T = any>(key: string): Promise<T | null> {
+    const item = await this.instance.get<T>(key) as any;
+
+    if (item?.expiredAt) {
+      // data expired
+      if (Date.now() > item.expiredAt) {
+        await this.remove(key);
+        return null;
+      }
+
+      return item.value;
+    }
+
+    return item;
   }
 
-  public set<T = any>(key: string, value: T) {
-    return this.instance.set(key, value);
+  public async set<T = any>(key: string, value: T, options?: ISetOptions) {
+    const maxAge = options?.maxAge;
+    let item: any;
+    
+    if (maxAge === undefined) {
+      item = value;
+    } else {
+      item = {
+        expiredAt: Date.now() + maxAge,
+        value,
+      };
+    }
+
+    return this.instance.set(key, item);
   }
 
-  public remove(key: string) {
+  public async remove(key: string) {
     return this.instance.remove(key);
   }
 
-  public keys() {
+  public async keys() {
     return this.instance.keys();
   }
 
-  public getAll<T = any>() {
+  public async getAll<T = any>() {
     return this.instance.getAll<T>();
   }
 
-  public clear() {
+  public async clear() {
     return this.instance.clear();
   }
 
-  public has(key: string) {
+  public async has(key: string) {
     return this.instance.has(key);
   }
 
@@ -91,31 +115,55 @@ export class Storage implements IStorage {
     return Storage._singletonInstance;
   }
 
-  public static get<T = any>(key: string) {
-    return this.instance.get<T>(key);
+  public static async get<T = any>(key: string): Promise<T | null> {
+    const item = await this.instance.get<T>(key) as any;
+
+    if (item?.expiredAt) {
+      // data expired
+      if (Date.now() > item.expiredAt) {
+        await this.remove(key);
+        return null;
+      }
+
+      return item.value;
+    }
+
+    return item;
   }
 
-  public static set<T = any>(key: string, value: T) {
-    return this.instance.set(key, value);
+  public static async set<T = any>(key: string, value: T, options?: ISetOptions) {
+    const maxAge = options?.maxAge;
+    let item: any;
+    
+    if (maxAge === undefined) {
+      item = value;
+    } else {
+      item = {
+        expiredAt: Date.now() + maxAge,
+        value,
+      };
+    }
+
+    return this.instance.set(key, item);
   }
 
-  public static remove(key: string) {
+  public static async remove(key: string) {
     return this.instance.remove(key);
   }
 
-  public static keys() {
+  public static async keys() {
     return this.instance.keys();
   }
 
-  public static getAll<T = any>() {
+  public static async getAll<T = any>() {
     return this.instance.getAll<T>();
   }
 
-  public static clear() {
+  public static async clear() {
     return this.instance.clear();
   }
 
-  public static has(key: string) {
+  public static async has(key: string) {
     return this.instance.has(key);
   }
 
