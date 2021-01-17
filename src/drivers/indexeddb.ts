@@ -155,6 +155,6 @@ export class IndexDBStorage extends StorageDriver {
     const _key = this.encodeKey(key);
     const keys = await this.keys();
 
-    return _key in keys;
+    return keys.includes(_key);
   }
 }
