@@ -29,7 +29,7 @@ export class Storage implements IStorage {
   private _diriver = this.options?.driver || constants.DEFAULT_DRIVER;
   private _prefix = this.options?.prefix || constants.DEFAULT_PREFIX;
 
-  constructor(private readonly options?: IStorageOptions) {}
+  constructor(private options?: IStorageOptions) {}
 
   private get instance() {
     const driver = this.driver;
@@ -47,6 +47,11 @@ export class Storage implements IStorage {
   // create creates a new Storage instance
   public create(options: IStorageOptions = constants.DEFAULT_OPTIONS) {
     return new Storage(options);
+  }
+
+  // config configs the options of the storage
+  public config(options: IStorageOptions) {
+    this.options = options;
   }
 
   // driver is the storage driver name
@@ -105,7 +110,7 @@ export class Storage implements IStorage {
     });
   }
 
-  // set sets the value of the given key
+  // remove removes the value of the given key
   public async remove(key: string) {
     return this.instance.remove(key);
   }
