@@ -16,10 +16,12 @@ const supportDrivers: Record<string, typeof StorageDriver> = {
   'service': ServiceStorage,
 };
 
-export function registerDriver(type: string, driver: typeof StorageDriver) {
+export function register(type: string, driver: typeof StorageDriver) {
   if (supportDrivers[type]) {
-    supportDrivers[type] = driver;
+    throw new Error(`Driver ${type} is already registered`);
   }
+
+  supportDrivers[type] = driver;
 }
 
 export function create(options?: IStorageOptions) {
@@ -86,7 +88,7 @@ export class Storage implements IStorage {
 
   // register registers the given driver
   public register(type: string, driver: typeof StorageDriver) {
-    registerDriver(type, driver);
+    register(type, driver);
   }
 
   // get returns the value of the given key
