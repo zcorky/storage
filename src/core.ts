@@ -1,17 +1,24 @@
-import { IStorage, IStorageOptions, IStorageDriverType, ISetOptions } from './type';
+import { IStorage, IStorageOptions, IStorageDriverType } from './type';
 import { isInvalidKey, encodeKey, decodeKey } from './utils';
 
+import { StorageDriver } from './driver';
 import { LocalStorage } from './drivers/localStorage';
 import { SessionStorage } from './drivers/sessionStorage';
 import { IndexDBStorage } from './drivers/indexeddb';
 
 import * as constants from './constants';
 
-const supportDrivers = {
+const supportDrivers: Record<string, typeof StorageDriver> = {
   'localStorage': LocalStorage,
   'sessionStorage': SessionStorage,
   'indexeddb': IndexDBStorage,
 };
+
+export function registerDriver(type: string, driver: typeof StorageDriver) {
+  if (supportDrivers[type]) {
+    supportDrivers[type] = driver;
+  }
+}
 
 export function create(options?: IStorageOptions) {
   const driver = options?.driver || 'localStorage';
@@ -20,7 +27,8 @@ export function create(options?: IStorageOptions) {
     throw new Error(`Unsupported driver: ${driver}, current availables: ${Object.keys(supportDrivers).join(', ')}`);
   }
 
-  return new DriverClass(options);
+  // @TODO
+  return new (DriverClass as any)(options);
 }
 
 // Storage is an enhanced storage, support multiple drivers.
@@ -72,6 +80,11 @@ export class Storage implements IStorage {
   // setPrefix sets the prefix of the key
   public setPrefix(prefix: string) {
     this._prefix = prefix;
+  }
+
+  // register registers the given driver
+  public register(type: string, driver: typeof StorageDriver) {
+    registerDriver(type, driver);
   }
 
   // get returns the value of the given key
