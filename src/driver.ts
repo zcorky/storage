@@ -1,4 +1,4 @@
-import { IStorageDriver, IStorageDriverOptions } from './type';
+import { ISetOptions, IStorageDriver, IStorageDriverOptions } from './type';
 import { isInvalidKey, encodeKey, decodeKey } from './utils';
 
 const DEFAULT_OPTIONS = {
@@ -29,7 +29,7 @@ export abstract class StorageDriver implements IStorageDriver {
 
   //
   public abstract get<T = any>(key: string): Promise<T | null>;
-  public abstract set<T = any>(key: string, value: T): Promise<void>;
+  public abstract set<T = any>(key: string, value: T, options?: ISetOptions): Promise<void>;
   public abstract remove(key: string): Promise<void>;
   public abstract keys(): Promise<string[]>;
   public abstract getAll<T = any>(): Promise<Record<string, T | null>>;

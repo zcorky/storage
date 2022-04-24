@@ -7,4 +7,4 @@ export {
   IStorageOptions,
 };
 
-export default Storage;
+export default new Storage();
