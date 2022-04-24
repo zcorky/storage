@@ -92,8 +92,7 @@ export class Storage implements IStorage {
   }
 
   // set sets the value of the given key
-  public async set<T = any>(key: string, value: T, options?: ISetOptions) {
-    const maxAge = options?.maxAge;
+  public async set<T = any>(key: string, value: T, maxAge?: number) {
     let item: any;
     
     if (maxAge === undefined) {
@@ -105,9 +104,7 @@ export class Storage implements IStorage {
       };
     }
 
-    return this.instance.set(key, item, {
-      maxAge,
-    });
+    return this.instance.set(key, item, maxAge);
   }
 
   // remove removes the value of the given key

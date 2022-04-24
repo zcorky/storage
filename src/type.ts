@@ -1,10 +1,17 @@
 export interface IStorage {
+  // get returns the value of the given key
   get<T = any>(key: string): Promise<T | null>;
-  set<T = any>(key: string, value: T, options?: ISetOptions): Promise<void>;
+  // set sets the value of the given key
+  set<T = any>(key: string, value: T, maxAge?: number): Promise<void>;
+  // remove removes the value of the given key
   remove(key: string): Promise<void>;
+  // keys returns the keys of the storage
   keys(): Promise<string[]>;
+  // getAll returns the all items of the storage
   getAll<T = any>(): Promise<Record<string, T | null>>;
+  // clear clears the storage
   clear(): Promise<void>;
+  // has checks whether the given key exists
   has(key: string): Promise<boolean>;
 }
 
