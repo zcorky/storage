@@ -32,4 +32,4 @@ export interface IStorageDriverOptions {
   prefix?: string;
 }
 
-export type IStorageDriverType = 'localStorage' | 'sessionStorage' | 'indexeddb';
+export type IStorageDriverType = 'local' | 'session' | 'indexeddb' | 'service';

@@ -5,13 +5,15 @@ import { StorageDriver } from './driver';
 import { LocalStorage } from './drivers/localStorage';
 import { SessionStorage } from './drivers/sessionStorage';
 import { IndexDBStorage } from './drivers/indexeddb';
+import { ServiceStorage } from './drivers/serviceStorage';
 
 import * as constants from './constants';
 
 const supportDrivers: Record<string, typeof StorageDriver> = {
-  'localStorage': LocalStorage,
-  'sessionStorage': SessionStorage,
+  'local': LocalStorage,
+  'session': SessionStorage,
   'indexeddb': IndexDBStorage,
+  'service': ServiceStorage,
 };
 
 export function registerDriver(type: string, driver: typeof StorageDriver) {
@@ -21,7 +23,7 @@ export function registerDriver(type: string, driver: typeof StorageDriver) {
 }
 
 export function create(options?: IStorageOptions) {
-  const driver = options?.driver || 'localStorage';
+  const driver = options?.driver || constants.DEFAULT_DRIVER;
   const DriverClass = supportDrivers[driver];
   if (!DriverClass) {
     throw new Error(`Unsupported driver: ${driver}, current availables: ${Object.keys(supportDrivers).join(', ')}`);

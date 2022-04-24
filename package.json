@@ -78,9 +78,14 @@
         "statements": 10
       }
     },
-    "setupFiles": ["<rootDir>/test/browser/mock.ts"]
+    "setupFiles": [
+      "<rootDir>/test/browser/mock.ts"
+    ]
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@zcorky/fz": "^1.2.15"
   }
 }

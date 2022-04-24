@@ -1,4 +1,4 @@
-import { ISetOptions, IStorageDriver, IStorageDriverOptions } from './type';
+import { IStorageDriver, IStorageDriverOptions } from './type';
 import { isInvalidKey, encodeKey, decodeKey } from './utils';
 
 const DEFAULT_OPTIONS = {
