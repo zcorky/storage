@@ -90,32 +90,35 @@ export class Storage implements IStorage {
   // get returns the value of the given key
   public async get<T = any>(key: string): Promise<T | null> {
     const item = await this.instance.get<T>(key) as any;
+    if (!item) {
+      return null;
+    }
 
-    if (item?.expiredAt) {
-      // data expired
-      if (Date.now() > item.expiredAt) {
-        await this.remove(key);
-        return null;
-      }
+    // invalid item
+    if (!('expiredAt' in item) || !('value' in item)) {
+      return null;
+    }
 
+    // never expired
+    if (item.expiredAt === -1) {
       return item.value;
     }
 
-    return item;
+    // data expired
+    if (Date.now() > item.expiredAt) {
+      await this.remove(key);
+      return null;
+    }
+
+    return item.value;
   }
 
   // set sets the value of the given key
   public async set<T = any>(key: string, value: T, maxAge?: number) {
-    let item: any;
-    
-    if (maxAge === undefined) {
-      item = value;
-    } else {
-      item = {
-        expiredAt: Date.now() + maxAge,
-        value,
-      };
-    }
+    const item = {
+      expiredAt: maxAge === undefined ? -1 : Date.now() + maxAge,
+      value,
+    };
 
     return this.instance.set(key, item, maxAge);
   }
@@ -132,7 +135,15 @@ export class Storage implements IStorage {
 
   // getAll returns the all items of the storage
   public async getAll<T = any>() {
-    return this.instance.getAll<T>();
+    const keys = await this.keys();
+    const items = await Promise.all(keys.map((key) => {
+      return this.get<T>(key);
+    })) as any as T[];
+
+    return keys.reduce((result, key, index) => {
+      result[key] = items[index];
+      return result;
+    }, {} as Record<string, T>);
   }
 
   // clear clears the storage

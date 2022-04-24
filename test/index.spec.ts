@@ -6,36 +6,36 @@ describe('storage', () => {
     it('string', async () => {
       await storage.set('key', 'value');
       // console.log('sss:', storage.encodeKey('key', '@@'));
-      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual('value');
+      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual({"expiredAt": -1, "value": "value"});
     });
 
     it('number', async () => {
       await storage.set('key', 0);
 
-      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual(0);
+      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual({"expiredAt": -1, "value": 0});
     });
 
     it('boolean', async () => {
       await storage.set('key', false);
 
-      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual(false);
+      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual({"expiredAt": -1, "value": false});
     });
 
     it('array', async () => {
       await storage.set('key', [1, '2', false, { x: '2' }]);
 
-      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual([1, '2', false, { x: '2' }]);
+      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual({"expiredAt": -1, "value": [1, "2", false, {"x": "2"}]});
     });
 
     it('object', async () => {
       await storage.set('key', { x: 'y' });
 
-      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual({ x: 'y' });
+      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual({ "expiredAt": -1, "value": { "x": "y" } });
     });
 
     it('null', async () => {
       await storage.set('key', null);
-      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual(null);
+      expect(JSON.parse(localStorage.getItem(storage.encodeKey('key', '@@')) as string)).toEqual({"expiredAt": -1, "value": null});
     });
   });
 
