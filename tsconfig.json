@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es2018", // Node.js 6
+    "target": "es2018", // Node.js 6
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"strictNullChecks": true,
@@ -9,7 +9,7 @@
 		"lib": ["es2018", "dom"],
 		"declaration": true,
 		"sourceMap": true,
-		"removeComments": true,
+		"removeComments": false,
 
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
