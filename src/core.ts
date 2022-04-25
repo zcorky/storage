@@ -122,6 +122,7 @@ export class Storage implements IStorage {
   }
 
   // set sets the value of the given key
+  // suport maxAge, unit: ms
   public async set<T = any>(key: string, value: T, maxAge?: number) {
     const item = {
       expiredAt: maxAge === undefined ? -1 : Date.now() + maxAge,

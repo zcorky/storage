@@ -27,17 +27,65 @@ $ npm install @zcorky/storage
 ```js
 import storage from '@zcorky/storage';
 
-// Store current user
-store.set('user', { name:'Marcus' })
+// set sets the value of the given key
+// suport maxAge, unit: ms
+storage.set('user', { name:'Marcus' }, 30 * 1000)
 
-// Get current user
-store.get('user')
+// get returns the value of the given key
+storage.get('user')
 
-// Remove current user
-store.remove('user')
+// remove removes the value of the given key
+storage.remove('user')
 
-// Clear all keys
-store.clear()
+// clear clears the storage
+storage.clear()
+
+// keys returns the keys of the storage
+storage.keys()
+
+// getAll returns the all items of the storage
+storage.getAll()
+
+// has checks whether the given key exists
+storage.has('user')
+```
+
+### Enhancement
+
+```js
+// built-in drivers
+//  local       - use localStorage
+//  session     - use sessionStorage
+//  indexeddb   - use IndexedDB
+//  service     - use service with http request
+storage.setDriver('session')
+
+// custom prefix
+storage.setPrefix('my-prefix-')
+```
+
+## Advanced Usage
+
+### 1. Create a new Storage
+Default storage is a global storage with singleton pattern.
+If you want to create a new storage, you can use `storage.create()` method.
+
+```js
+const storage = storage.create(options);
+```
+
+### 2. Create Custom Driver
+
+```typescript
+import { StorageDriver } from '@zcorky/storage';
+
+// 1. Create a class implements StorageDriver
+export class CustomStorage extends StorageDriver {
+  ...
+}
+
+// 2. Register the driver
+storage.setDriver('custom', CustomStorage)
 ```
 
 ### API
