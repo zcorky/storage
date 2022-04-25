@@ -16,12 +16,12 @@ const supportDrivers: Record<string, typeof StorageDriver> = {
   'service': ServiceStorage,
 };
 
-export function register(type: string, driver: typeof StorageDriver) {
-  if (supportDrivers[type]) {
-    throw new Error(`Driver ${type} is already registered`);
+export function register(name: string, driver: typeof StorageDriver) {
+  if (supportDrivers[name]) {
+    throw new Error(`Driver ${name} is already registered`);
   }
 
-  supportDrivers[type] = driver;
+  supportDrivers[name] = driver;
 }
 
 export function create(options?: IStorageOptions) {
@@ -72,8 +72,17 @@ export class Storage implements IStorage {
   }
 
   // setDriver sets the storage driver name
-  public setDriver(driver: IStorageDriverType) {
-    this._diriver = driver;
+  public setDriver(name: IStorageDriverType) {
+    if (!supportDrivers[name]) {
+      throw new Error(`Unsupported driver: ${name}, current availables: ${Object.keys(supportDrivers).join(', ')}`);
+    }
+
+    this._diriver = name;
+  }
+
+  // register registers the given driver
+  public registerDriver(name: string, driver: typeof StorageDriver) {
+    register(name, driver);
   }
 
   // prefix is the prefix of the key
@@ -84,11 +93,6 @@ export class Storage implements IStorage {
   // setPrefix sets the prefix of the key
   public setPrefix(prefix: string) {
     this._prefix = prefix;
-  }
-
-  // register registers the given driver
-  public register(type: string, driver: typeof StorageDriver) {
-    register(type, driver);
   }
 
   // get returns the value of the given key
