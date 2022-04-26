@@ -1,3 +1,4 @@
+import { JSONRPCStorage } from './drivers/jsonrpc';
 import { IStorage, IStorageOptions, IStorageDriverType } from './type';
 import { isInvalidKey, encodeKey, decodeKey } from './utils';
 
@@ -14,6 +15,7 @@ const supportDrivers: Record<string, typeof StorageDriver> = {
   'session': SessionStorage,
   'indexeddb': IndexDBStorage,
   'service': ServiceStorage,
+  'jsonrpc': JSONRPCStorage,
 };
 
 export function register(name: string, driver: typeof StorageDriver) {
