@@ -43,7 +43,7 @@ export class Storage implements IStorage {
   private _diriver = this.options?.driver || constants.DEFAULT_DRIVER;
   private _prefix = this.options?.prefix || constants.DEFAULT_PREFIX;
 
-  constructor(private options?: IStorageOptions) {}
+  constructor(private options?: IStorageOptions) { }
 
   private get instance() {
     const driver = this.driver;
@@ -56,6 +56,39 @@ export class Storage implements IStorage {
     }
 
     return this._instances[driver];
+  }
+
+  public get session() {
+    if (!this._instances.session) {
+      this._instances.session = create({
+        ...this.options,
+        driver: 'session',
+      });
+    }
+
+    return this._instances.session;
+  }
+
+  public get local() {
+    if (!this._instances.local) {
+      this._instances.local = create({
+        ...this.options,
+        driver: 'local',
+      });
+    }
+
+    return this._instances.local;
+  }
+
+  public get indexeddb() {
+    if (!this._instances.indexeddb) {
+      this._instances.indexeddb = create({
+        ...this.options,
+        driver: 'indexeddb',
+      });
+    }
+
+    return this._instances.indexeddb;
   }
 
   // create creates a new Storage instance
