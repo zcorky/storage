@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [12.x, 14.x, 16.x, 18.x]
     steps:
       - uses: actions/checkout@v2
 
@@ -52,7 +52,7 @@ jobs:
       
       - uses: zmicro-design/action-setup-node@v1
         with:
-          node-version: 14
+          node-version: v16
 
       - name: Cache Node_modules
         uses: actions/cache@v2
