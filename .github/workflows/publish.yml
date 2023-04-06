@@ -15,10 +15,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build on Node.js ${{ matrix.node-version }}
-        # uses: actions/setup-node@v1
         uses: zmicro-design/action-setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: Cache Node_modules
         uses: actions/cache@v2
         env:
@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - uses: actions/setup-node@v1
+      - uses: zmicro-design/action-setup-node@v1
         with:
           node-version: 14
 
